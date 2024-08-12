@@ -134,8 +134,8 @@ namespace Pizza_Place_Challenge.API
 
                 PizzaTypeRepository repository = new PizzaTypeRepository(_context);
 
-                List<PizzaType> newpizzatypes = new();
-                List<CSV_PizzaType> pizzatypes = new();
+                List<PizzaType> newpizzatype_list = new();
+                List<CSV_PizzaType> pizzatypes_fromcsvlist = new();
 
                 if (pizzatype_csv == null || pizzatype_csv.Length == 0) {
                     result.SetStatus(HttpStatusCode.InternalServerError, "Cannot read csv file");
@@ -145,15 +145,15 @@ namespace Pizza_Place_Challenge.API
                     using (var stream = pizzatype_csv.OpenReadStream())
                     using (var reader = new StreamReader(stream))
                     using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture))) {
-                        pizzatypes = csv.GetRecords<CSV_PizzaType>().ToList();
+                        pizzatypes_fromcsvlist = csv.GetRecords<CSV_PizzaType>().ToList();
                     }
                 }
 
-                foreach (CSV_PizzaType pizzatype in pizzatypes) {
+                foreach (CSV_PizzaType pizzatype_fromcsv in pizzatypes_fromcsvlist) {
 
                     PizzaCategories_Enumeration category = PizzaCategories_Enumeration.Classic;
                     
-                    switch(pizzatype.Category.ToLower()) {
+                    switch(pizzatype_fromcsv.Category.ToLower()) {
                         case "chicken":
                             category = PizzaCategories_Enumeration.Chicken;
                             break;
@@ -169,17 +169,17 @@ namespace Pizza_Place_Challenge.API
                     }
 
                     PizzaType new_pizzatype = new PizzaType() {
-                        Name = pizzatype.Name,
-                        Code = pizzatype.PizzaTypeId,
-                        Ingredients = pizzatype.Ingredients,
+                        Name = pizzatype_fromcsv.Name,
+                        Code = pizzatype_fromcsv.PizzaTypeId,
+                        Ingredients = pizzatype_fromcsv.Ingredients,
                         Category = category
                     };
 
                     
-                    newpizzatypes.Add(new_pizzatype);
+                    newpizzatype_list.Add(new_pizzatype);
                 }
-                await repository.AddAsync(newpizzatypes);
-                result.PizzaTypes = newpizzatypes;
+                await repository.AddAsync(newpizzatype_list);
+                result.PizzaTypes = newpizzatype_list;
             } catch (Exception ex) {
                 result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);
             }

@@ -178,8 +178,8 @@ namespace Pizza_Place_Challenge.API
 
                 OrderRepository repository = new OrderRepository(_context);
 
-                List<Order> neworders = new();
-                List<CSV_Order> orderslist_fromcsv = new();
+                List<Order> neworders_list = new();
+                List<CSV_Order> orders_fromcsvlist = new();
 
                 if (ordercsv == null || ordercsv.Length == 0) {
                     result.SetStatus(HttpStatusCode.InternalServerError, "Cannot read csv file");
@@ -189,11 +189,11 @@ namespace Pizza_Place_Challenge.API
                     using (var stream = ordercsv.OpenReadStream())
                     using (var reader = new StreamReader(stream))
                     using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture))) {
-                        orderslist_fromcsv = csv.GetRecords<CSV_Order>().ToList();
+                        orders_fromcsvlist = csv.GetRecords<CSV_Order>().ToList();
                     }
                 }
 
-                foreach (CSV_Order order_fromcsv in orderslist_fromcsv) {
+                foreach (CSV_Order order_fromcsv in orders_fromcsvlist) {
 
                     DateTime datetimefromcsv = DateTime.UtcNow;
 
@@ -215,13 +215,13 @@ namespace Pizza_Place_Challenge.API
                         OrderId_FromCSV = orderid_fromcsv
                     };
 
-                    neworders.Add(new_order);
+                    neworders_list.Add(new_order);
                 }
                 
-                await repository.AddAsync(neworders);
+                await repository.AddAsync(neworders_list);
 
                 // THIS IS JUST TO SHOW 200 RECORDS a large amount of data will cause swagger to be sluggish
-                result.Orders = neworders.Skip(0).Take(200).ToList();
+                result.Orders = neworders_list.Skip(0).Take(200).ToList();
             } catch (Exception ex) {
                 result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);
             }

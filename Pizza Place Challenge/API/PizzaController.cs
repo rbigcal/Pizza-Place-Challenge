@@ -148,8 +148,8 @@ namespace Pizza_Place_Challenge.API
 
                 PizzaRepository repository = new PizzaRepository(_context);
 
-                List<Pizza> newpizza_list = new();
-                List<CSV_Pizza> csv_pizzalist = new();
+                List<Pizza> newpizzas_list = new();
+                List<CSV_Pizza> pizzas_fromcsvlist = new();
 
                 if (pizzatype_csv == null || pizzatype_csv.Length == 0) {
                     result.SetStatus(HttpStatusCode.InternalServerError, "Cannot read csv file");
@@ -159,17 +159,17 @@ namespace Pizza_Place_Challenge.API
                     using (var stream = pizzatype_csv.OpenReadStream())
                     using (var reader = new StreamReader(stream))
                     using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture))) {
-                        csv_pizzalist = csv.GetRecords<CSV_Pizza>().ToList();
+                        pizzas_fromcsvlist = csv.GetRecords<CSV_Pizza>().ToList();
                     }
                 }
 
                 List<PizzaType> pizzatype_list = await new PizzaTypeRepository(_context).GetAllAsync();
 
-                foreach (CSV_Pizza pizza in csv_pizzalist) {
+                foreach (CSV_Pizza pizza_fromcsv in pizzas_fromcsvlist) {
 
                     PizzaSizes_Enumeration size = PizzaSizes_Enumeration.S;
 
-                    switch (pizza.Size.ToLower()) {
+                    switch (pizza_fromcsv.Size.ToLower()) {
                         case "s":
                             size = PizzaSizes_Enumeration.S;
                             break;
@@ -189,9 +189,9 @@ namespace Pizza_Place_Challenge.API
 
                     string id_pizzatype = string.Empty;
 
-                    if (!string.IsNullOrEmpty(pizza.PizzaTypeId)) {
+                    if (!string.IsNullOrEmpty(pizza_fromcsv.PizzaTypeId)) {
                         if (pizzatype_list.Any()) {
-                            PizzaType pizzatype = pizzatype_list.FirstOrDefault(i => i.Code ==  pizza.PizzaTypeId);
+                            PizzaType pizzatype = pizzatype_list.FirstOrDefault(i => i.Code ==  pizza_fromcsv.PizzaTypeId);
 
                             if(pizzatype != null) {
                                 id_pizzatype = pizzatype.Id;
@@ -200,20 +200,20 @@ namespace Pizza_Place_Challenge.API
                     }
 
                     float pizzaprice = 0;
-                    float.TryParse(pizza.Price, out pizzaprice);
+                    float.TryParse(pizza_fromcsv.Price, out pizzaprice);
 
                     Pizza new_pizza = new Pizza() {
                         ID_PizzaType = id_pizzatype,
-                        PizzaId = pizza.PizzaId,
+                        PizzaId = pizza_fromcsv.PizzaId,
                         Price = pizzaprice,
                         Size = size
                     };
 
-                    newpizza_list.Add(new_pizza);
+                    newpizzas_list.Add(new_pizza);
                 }
 
-                await repository.AddAsync(newpizza_list);
-                result.Pizzas = newpizza_list;
+                await repository.AddAsync(newpizzas_list);
+                result.Pizzas = newpizzas_list;
             } catch (Exception ex) {
                 result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);
             }
