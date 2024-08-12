@@ -32,7 +32,7 @@ namespace Pizza_Place_Challenge.API
         public class AllPizzasModel : ApiControllerModel
         {
             [JsonProperty(PropertyName = "pizzas")]
-            public IEnumerable<Pizza> Pizzas { get; set; }
+            public List<Pizza> Pizzas { get; set; } = new();
         }
 
         public class ByPizzaModel : ApiControllerModel

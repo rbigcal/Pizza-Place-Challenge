@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pizza_Place_Challenge.Core.Data.Base;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Pizza_Place_Challenge.Core.Data.Entities
 {
@@ -15,8 +16,13 @@ namespace Pizza_Place_Challenge.Core.Data.Entities
         #endregion
         #region . PROPERTY FIELDS THAT CAME FROM CSV    .
         // for data purposes only
+        [NotMapped]
         public string OrderID_FROMCSV { get; set; }
+
+        [NotMapped]
         public string Date_FROMCSV { get; set; }
+
+        [NotMapped]
         public string Time_FROMCSV { get; set; }
         #endregion
     }
