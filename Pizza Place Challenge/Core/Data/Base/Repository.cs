@@ -1,7 +1,5 @@
 ﻿
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
-using static ServiceStack.OrmLite.Dapper.SqlMapper;
 
 namespace Pizza_Place_Challenge.Core.Data.Base
 {
@@ -22,7 +20,7 @@ namespace Pizza_Place_Challenge.Core.Data.Base
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(string id)
         {
             return await _dbSet.FindAsync(id);
         }
@@ -39,7 +37,7 @@ namespace Pizza_Place_Challenge.Core.Data.Base
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             var entity = await _dbSet.FindAsync(id);
             if (entity != null)
