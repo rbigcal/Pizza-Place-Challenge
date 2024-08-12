@@ -209,10 +209,10 @@ namespace Pizza_Place_Challenge.API
                         Size = size
                     };
 
-                    await repository.AddAsync(new_pizza);
                     newpizza_list.Add(new_pizza);
                 }
 
+                await repository.AddAsync(newpizza_list);
                 result.Pizzas = newpizza_list;
             } catch (Exception ex) {
                 result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);

@@ -175,10 +175,10 @@ namespace Pizza_Place_Challenge.API
                         Category = category
                     };
 
-                    await repository.AddAsync(new_pizzatype);
+                    
                     newpizzatypes.Add(new_pizzatype);
                 }
-
+                await repository.AddAsync(newpizzatypes);
                 result.PizzaTypes = newpizzatypes;
             } catch (Exception ex) {
                 result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);

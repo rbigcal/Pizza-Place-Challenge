@@ -16,18 +16,10 @@ namespace Pizza_Place_Challenge.Core.Data.Entities
 
         #endregion
         #region . PROPERTY FIELDS THAT CAME FROM CSV    .
-        // for data purposes only
-        [NotMapped]
-        [JsonIgnore]
-        public string OrderID_FROMCSV { get; set; }
 
-        [NotMapped]
         [JsonIgnore]
-        public string Date_FROMCSV { get; set; }
+        public int OrderId_FromCSV { get; set; } = -1;
 
-        [NotMapped]
-        [JsonIgnore]
-        public string Time_FROMCSV { get; set; }
         #endregion
     }
 

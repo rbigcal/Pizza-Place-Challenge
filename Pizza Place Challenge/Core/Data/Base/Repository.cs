@@ -31,6 +31,11 @@ namespace Pizza_Place_Challenge.Core.Data.Base
             await _context.SaveChangesAsync();
         }
 
+        public async Task AddAsync(List<T> entity) {
+            await _dbSet.AddRangeAsync(entity);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task UpdateAsync(T entity)
         {
             _dbSet.Update(entity);
@@ -46,5 +51,7 @@ namespace Pizza_Place_Challenge.Core.Data.Base
                 await _context.SaveChangesAsync();
             }
         }
+
+        
     }
 }
