@@ -31,8 +31,8 @@ namespace Pizza_Place_Challenge.Core.Data.Entities {
         // for specific methods or queries
         Task<PizzaType> GetPizzaTypeByName(string pizzatypename);
         Task<PizzaType> GetPizzaTypeByCode(string code);
-        Task<IEnumerable<PizzaType>> GetPizzaTypeByNameLike(string pizzatypename);
-        Task<IEnumerable<PizzaType>> GetPizzaTypeByCategory(PizzaCategories_Enumeration category);
+        Task<List<PizzaType>> GetPizzaTypeByNameLike(string pizzatypename);
+        Task<List<PizzaType>> GetPizzaTypeByCategory(PizzaCategories_Enumeration category);
     }
 
     public class PizzaTypeRepository : Repository<PizzaType>, IPizzaTypeRepository
@@ -60,7 +60,7 @@ namespace Pizza_Place_Challenge.Core.Data.Entities {
             return await _dbSet.FirstOrDefaultAsync(pizzatype => pizzatype.Code.ToLower().Equals(code.ToLower()));
         }
 
-        public async Task<IEnumerable<PizzaType>> GetPizzaTypeByNameLike(string pizzatypename)
+        public async Task<List<PizzaType>> GetPizzaTypeByNameLike(string pizzatypename)
         {
             // from here we have two options be strict with the case of the letters
             // which will use this code 
@@ -71,7 +71,7 @@ namespace Pizza_Place_Challenge.Core.Data.Entities {
             return await _dbSet.Where(pizzatype => pizzatype.Name.ToLower().Contains(pizzatypename.ToLower())).ToListAsync();
         }
 
-        public async Task<IEnumerable<PizzaType>> GetPizzaTypeByCategory(PizzaCategories_Enumeration category)
+        public async Task<List<PizzaType>> GetPizzaTypeByCategory(PizzaCategories_Enumeration category)
         {
             return await _dbSet.Where(pizzatype => pizzatype.Category == category).ToListAsync();
         }

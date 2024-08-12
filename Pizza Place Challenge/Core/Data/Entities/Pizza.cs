@@ -32,20 +32,20 @@ namespace Pizza_Place_Challenge.Core.Data.Entities {
     public interface IPizzaRepository : IRepository<Pizza>
     {
         // for specific methods or queries
-        Task<IEnumerable<Pizza>> GetByPizzaType(string pizzatypeid);
-        Task<IEnumerable<Pizza>> GetPizzaByPriceRange(double minprice, double maxprice);
+        Task<List<Pizza>> GetByPizzaType(string pizzatypeid);
+        Task<List<Pizza>> GetPizzaByPriceRange(double minprice, double maxprice);
     }
 
     public class PizzaRepository : Repository<Pizza>, IPizzaRepository
     {
         public PizzaRepository(DbContext context) : base(context) { }
 
-        public async Task<IEnumerable<Pizza>> GetByPizzaType(string pizzatypeid)
+        public async Task<List<Pizza>> GetByPizzaType(string pizzatypeid)
         {
             return await _dbSet.Where(pizza => pizza.ID_PizzaType == pizzatypeid).ToListAsync();
         }
 
-        public async Task<IEnumerable<Pizza>> GetPizzaByPriceRange(double minprice, double maxprice)
+        public async Task<List<Pizza>> GetPizzaByPriceRange(double minprice, double maxprice)
         {
             return await _dbSet.Where(pizza => pizza.Price >= minprice && pizza.Price <= maxprice).ToListAsync();
         }

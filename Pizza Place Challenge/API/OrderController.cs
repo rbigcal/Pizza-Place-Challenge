@@ -65,7 +65,6 @@ namespace Pizza_Place_Challenge.API {
                 OrderRepository repository = new OrderRepository(_context);
 
                 List<Order> orders = await repository.GetAllAsync();
-
                 result.Orders = orders.OrderBy(o => o.DateTime).Skip(skip).Take(shownumberofrecords).ToList();
 
             }

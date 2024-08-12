@@ -63,10 +63,45 @@ namespace Pizza_Place_Challenge.API
             try
             {
                 PizzaRepository repository = new PizzaRepository(_context);
-                result.Pizzas = await repository.GetAllAsync();
+                List<Pizza> pizza_list = await repository.GetAllAsync();
+                result.Pizzas = pizza_list.Skip(skip).Take(shownumberofrecords).ToList();
             }
             catch (Exception ex) 
             { 
+                result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return result;
+        }
+
+        [HttpGet, Route("query/all-by-pizza-type"), AllowAnonymous]
+        public async Task<AllPizzasModel> GetAllPizzasByPizzaTypeAsync(string pizzatype_id,int skip = 0, int shownumberofrecords = 10) {
+            AllPizzasModel result = new();
+
+            try {
+                PizzaRepository repository = new PizzaRepository(_context);
+                
+                List<Pizza> pizza_list = await repository.GetByPizzaType(pizzatype_id);
+                result.Pizzas = pizza_list.Skip(skip).Take(shownumberofrecords).ToList();
+
+            } catch (Exception ex) {
+                result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return result;
+        }
+
+        [HttpGet, Route("query/all-by-price-range"), AllowAnonymous]
+        public async Task<AllPizzasModel> GetAllPizzasByPriceRangeAsync(double minprice, double maxprice, int skip = 0, int shownumberofrecords = 10) {
+            AllPizzasModel result = new();
+
+            try {
+                PizzaRepository repository = new PizzaRepository(_context);
+
+                List<Pizza> pizza_list = await repository.GetPizzaByPriceRange(minprice, maxprice);
+                result.Pizzas = pizza_list.Skip(skip).Take(shownumberofrecords).ToList();
+
+            } catch (Exception ex) {
                 result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);
             }
 

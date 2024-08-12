@@ -62,10 +62,41 @@ namespace Pizza_Place_Challenge.API
             try
             {
                 PizzaTypeRepository repository = new PizzaTypeRepository(_context);
-                result.PizzaTypes = await repository.GetAllAsync();
+                List<PizzaType> pizzatype_list = await repository.GetAllAsync();
+                result.PizzaTypes = pizzatype_list.Skip(skip).Take(shownumberofrecords).ToList();
             }
             catch (Exception ex) 
             { 
+                result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return result;
+        }
+
+        [HttpGet, Route("query/all-by-like-name"), AllowAnonymous]
+        public async Task<AllPizzaTypesModel> GetAllPizzaTypesByNameLikeAsync(string name,int skip = 0, int shownumberofrecords = 10) {
+            AllPizzaTypesModel result = new();
+
+            try {
+                PizzaTypeRepository repository = new PizzaTypeRepository(_context);
+                List<PizzaType> pizzatype_list = await repository.GetPizzaTypeByNameLike(name);
+                result.PizzaTypes = pizzatype_list.Skip(skip).Take(shownumberofrecords).ToList();
+            } catch (Exception ex) {
+                result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return result;
+        }
+
+        [HttpGet, Route("query/all-by-category"), AllowAnonymous]
+        public async Task<AllPizzaTypesModel> GetAllPizzaTypesByCategoryAsync(PizzaCategories_Enumeration category, int skip = 0, int shownumberofrecords = 10) {
+            AllPizzaTypesModel result = new();
+
+            try {
+                PizzaTypeRepository repository = new PizzaTypeRepository(_context);
+                List<PizzaType> pizzatype_list = await repository.GetPizzaTypeByCategory(category);
+                result.PizzaTypes = pizzatype_list.Skip(skip).Take(shownumberofrecords).ToList();
+            } catch (Exception ex) {
                 result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);
             }
 
@@ -92,6 +123,52 @@ namespace Pizza_Place_Challenge.API
             }
             catch (Exception ex)
             {
+                result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return result;
+        }
+
+        [HttpGet, Route("query/by-name"), AllowAnonymous]
+        public async Task<ByPizzaTypeModel> ByPizzaTypeNameAsync(
+            string name
+        ) {
+            ByPizzaTypeModel result = new();
+
+            try {
+                PizzaTypeRepository repository = new PizzaTypeRepository(_context);
+                PizzaType pizzatype = await repository.GetPizzaTypeByName(name);
+
+                if (pizzatype == null) {
+                    result.SetStatus(HttpStatusCode.NotFound, "Pizza Type not found");
+                    return result;
+                }
+
+                result.PizzaType = pizzatype;
+            } catch (Exception ex) {
+                result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return result;
+        }
+
+        [HttpGet, Route("query/by-code"), AllowAnonymous]
+        public async Task<ByPizzaTypeModel> ByPizzaTypeCodeAsync(
+            string code
+        ) {
+            ByPizzaTypeModel result = new();
+
+            try {
+                PizzaTypeRepository repository = new PizzaTypeRepository(_context);
+                PizzaType pizzatype = await repository.GetPizzaTypeByCode(code);
+
+                if (pizzatype == null) {
+                    result.SetStatus(HttpStatusCode.NotFound, "Pizza Type not found");
+                    return result;
+                }
+
+                result.PizzaType = pizzatype;
+            } catch (Exception ex) {
                 result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);
             }
 
