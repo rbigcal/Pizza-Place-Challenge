@@ -12,11 +12,13 @@ namespace Pizza_Place_Challenge.Core.Data.Entities
         #endregion
         #region . PROPERTY FIELDS FOR SPECIFIC CLASS    .
 
+        [JsonProperty(PropertyName = "date_time")]
         public DateTime DateTime { get; set; }
 
         #endregion
         #region . PROPERTY FIELDS THAT CAME FROM CSV    .
 
+        [JsonProperty(PropertyName = "order_id_from_csv")]
         [JsonIgnore]
         public int OrderId_FromCSV { get; set; } = -1;
 

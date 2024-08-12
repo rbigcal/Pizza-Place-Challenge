@@ -10,12 +10,16 @@ namespace Pizza_Place_Challenge.Core.Data.Entities
     {
         #region . ASSOCIATION FIELDS                    .
 
+        [JsonProperty(PropertyName = "id_order")]
         public string ID_Order { get; set; }
+
+        [JsonProperty(PropertyName = "id_pizza")]
         public string ID_Pizza { get; set; }
 
         #endregion
         #region . PROPERTY FIELDS FOR SPECIFIC CLASS    .
 
+        [JsonProperty(PropertyName = "status")]
         public int Quantity { get; set; }
 
         #endregion
