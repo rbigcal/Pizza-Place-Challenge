@@ -13,7 +13,14 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(
+        options =>
+        {
+            options.DefaultModelExpandDepth(-1);
+            options.EnableTryItOutByDefault();
+            options.DocumentTitle = "Pizza Sales API";
+            options.SwaggerEndpoint("/swagger/v1/swagger.json", "Pizza Sales");
+        });
 }
 
 app.UseHttpsRedirection();
