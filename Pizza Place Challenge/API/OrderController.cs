@@ -167,7 +167,7 @@ namespace Pizza_Place_Challenge.API {
         }
 
         [HttpPut, Route("action/upload-csv"), AllowAnonymous]
-        public async Task<AllOrderModel> NewOrderUploadCSVAsync(IFormFile ordercsv) {
+        public async Task<AllOrderModel> NewOrderUploadCSVAsync(IFormFile order_csv) {
             AllOrderModel result = new();
 
             try {
@@ -177,12 +177,12 @@ namespace Pizza_Place_Challenge.API {
                 List<Order> neworders_list = new();
                 List<CSV_Order> orders_fromcsvlist = new();
 
-                if (ordercsv == null || ordercsv.Length == 0) {
+                if (order_csv == null || order_csv.Length == 0) {
                     result.SetStatus(HttpStatusCode.InternalServerError, "Cannot read csv file");
                 }
 
-                if (ordercsv != null) {
-                    using (var stream = ordercsv.OpenReadStream())
+                if (order_csv != null) {
+                    using (var stream = order_csv.OpenReadStream())
                     using (var reader = new StreamReader(stream))
                     using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture))) {
                         orders_fromcsvlist = csv.GetRecords<CSV_Order>().ToList();
