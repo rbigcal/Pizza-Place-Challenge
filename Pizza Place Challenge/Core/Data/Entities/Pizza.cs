@@ -23,7 +23,7 @@ namespace Pizza_Place_Challenge.Core.Data.Entities {
         public PizzaSizes_Enumeration Size { get; set; }
 
         [JsonPropertyName("price")]
-        public float Price { get; set; }
+        public double Price { get; set; }
 
         #endregion
 
@@ -33,7 +33,7 @@ namespace Pizza_Place_Challenge.Core.Data.Entities {
     {
         // for specific methods or queries
         Task<IEnumerable<Pizza>> GetByPizzaType(string pizzatypeid);
-        Task<IEnumerable<Pizza>> GetPizzaByPriceRange(float minprice, float maxprice);
+        Task<IEnumerable<Pizza>> GetPizzaByPriceRange(double minprice, double maxprice);
     }
 
     public class PizzaRepository : Repository<Pizza>, IPizzaRepository
@@ -45,7 +45,7 @@ namespace Pizza_Place_Challenge.Core.Data.Entities {
             return await _dbSet.Where(pizza => pizza.ID_PizzaType == pizzatypeid).ToListAsync();
         }
 
-        public async Task<IEnumerable<Pizza>> GetPizzaByPriceRange(float minprice, float maxprice)
+        public async Task<IEnumerable<Pizza>> GetPizzaByPriceRange(double minprice, double maxprice)
         {
             return await _dbSet.Where(pizza => pizza.Price >= minprice && pizza.Price <= maxprice).ToListAsync();
         }

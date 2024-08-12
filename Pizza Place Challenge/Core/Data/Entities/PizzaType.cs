@@ -30,6 +30,7 @@ namespace Pizza_Place_Challenge.Core.Data.Entities {
     {
         // for specific methods or queries
         Task<PizzaType> GetPizzaTypeByName(string pizzatypename);
+        Task<PizzaType> GetPizzaTypeByCode(string code);
         Task<IEnumerable<PizzaType>> GetPizzaTypeByNameLike(string pizzatypename);
         Task<IEnumerable<PizzaType>> GetPizzaTypeByCategory(PizzaCategories_Enumeration category);
     }
@@ -47,6 +48,16 @@ namespace Pizza_Place_Challenge.Core.Data.Entities {
             // await _dbSet.FirstOrDefaultAsync(pizzatype => pizzatype.Name.ToLower().Equals(pizzatypename.ToLower()));
 
             return await _dbSet.FirstOrDefaultAsync(pizzatype => pizzatype.Name.ToLower().Equals(pizzatypename.ToLower()));
+        }
+
+        public async Task<PizzaType> GetPizzaTypeByCode(string code) {
+            // from here we have two options be strict with the case of the letters
+            // which will use this code 
+            // await _dbSet.FirstOrDefaultAsync(pizzatype => pizzatype.Code.Equals(code));
+            // or this one which ignores case sensitivity
+            // await _dbSet.FirstOrDefaultAsync(pizzatype => pizzatype.Code.ToLower().Equals(code.ToLower()));
+
+            return await _dbSet.FirstOrDefaultAsync(pizzatype => pizzatype.Code.ToLower().Equals(code.ToLower()));
         }
 
         public async Task<IEnumerable<PizzaType>> GetPizzaTypeByNameLike(string pizzatypename)
