@@ -16,7 +16,7 @@ using static Pizza_Place_Challenge.API.PizzaTypesController;
 
 namespace Pizza_Place_Challenge.API
 {
-    [Route("api/[controller]")]
+    [Route("api/pizza")]
     [ApiController, AllowAnonymous]
     public class PizzaController : ControllerBase
     {
@@ -56,7 +56,7 @@ namespace Pizza_Place_Challenge.API
         #region . API Endpoints        .
 
         [HttpGet, Route("query/all"), AllowAnonymous]
-        public async Task<AllPizzasModel> GetAllPizzasAsync()
+        public async Task<AllPizzasModel> GetAllPizzasAsync(int skip = 0, int shownumberofrecords = 10)
         {
             AllPizzasModel result = new();
 

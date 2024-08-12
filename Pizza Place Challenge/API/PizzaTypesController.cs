@@ -15,7 +15,7 @@ using System.Net;
 
 namespace Pizza_Place_Challenge.API
 {
-    [Route("api/[controller]")]
+    [Route("api/pizza-types")]
     [ApiController, AllowAnonymous]
     public class PizzaTypesController : ControllerBase
     {
@@ -55,7 +55,7 @@ namespace Pizza_Place_Challenge.API
         #region . API Endpoints        .
 
         [HttpGet, Route("query/all"), AllowAnonymous]
-        public async Task<AllPizzaTypesModel> GetAllPizzaTypesAsync()
+        public async Task<AllPizzaTypesModel> GetAllPizzaTypesAsync(int skip = 0, int shownumberofrecords = 10)
         {
             AllPizzaTypesModel result = new();
 

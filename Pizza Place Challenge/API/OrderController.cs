@@ -4,20 +4,16 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Newtonsoft.Json;
 using Pizza_Place_Challenge.API.Base.Models;
 using Pizza_Place_Challenge.API.CSV.Models;
 using Pizza_Place_Challenge.Core.Data;
 using Pizza_Place_Challenge.Core.Data.Entities;
-using Pizza_Place_Challenge.Core.Enumerations;
-using System.Diagnostics;
 using System.Globalization;
 using System.Net;
 
-namespace Pizza_Place_Challenge.API
-{
-    [Route("api/[controller]")]
+namespace Pizza_Place_Challenge.API {
+    [Route("api/order")]
     [ApiController, AllowAnonymous]
     public class OrderController : ControllerBase {
         #region . Setup                .
@@ -48,7 +44,7 @@ namespace Pizza_Place_Challenge.API
             public Order Order { get; set; }
         }
 
-        public class DTO_OrderInfo {
+        public class ORDER_DTO_OrderInfo {
             [JsonProperty(PropertyName = "pizzaid")]
             public string PizzaId { get; set; }
 
@@ -60,7 +56,7 @@ namespace Pizza_Place_Challenge.API
         #region . API Endpoints        .
 
         [HttpGet, Route("query/all"), AllowAnonymous]
-        public async Task<AllOrderModel> GetAllOrdersAsync(int skip, int shownumberofrecords)
+        public async Task<AllOrderModel> GetAllOrdersAsync(int skip = 0, int shownumberofrecords = 10)
         {
             AllOrderModel result = new();
 
@@ -132,7 +128,7 @@ namespace Pizza_Place_Challenge.API
         }
 
         [HttpPut, Route("action/new-order-with-details"), AllowAnonymous]
-        public async Task<NewEditOrderModel> NewOrderWithDetailsAsync(List<DTO_OrderInfo> input_params) {
+        public async Task<NewEditOrderModel> NewOrderWithDetailsAsync(List<ORDER_DTO_OrderInfo> input_params) {
             NewEditOrderModel result = new();
 
             try {
@@ -149,7 +145,7 @@ namespace Pizza_Place_Challenge.API
                 List<OrderDetail> orderdetails = new List<OrderDetail>();
 
                 if (input_params.Any()) { 
-                    foreach(DTO_OrderInfo order_info in  input_params) {
+                    foreach(ORDER_DTO_OrderInfo order_info in  input_params) {
                         OrderDetail new_orderdetail = new OrderDetail() {
                             ID_Order = order.Id,
                             ID_Pizza = order_info.PizzaId,
