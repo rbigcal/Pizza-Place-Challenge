@@ -1,11 +1,14 @@
 using Pizza_Place_Challenge.Core.Data;
 using Microsoft.EntityFrameworkCore;
+using Pizza_Place_Challenge.Core.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+                    .AddNewtonsoftJson(options => {
+                        options.SerializerSettings.ContractResolver = new LowerCaseContractResolverHelper();
+                    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -18,12 +21,10 @@ builder.Services.AddDbContext<DataContext>(options => {
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI(
-        options =>
-        {
+        options => {
             options.DefaultModelExpandDepth(-1);
             options.EnableTryItOutByDefault();
             options.DocumentTitle = "Pizza Sales API";
