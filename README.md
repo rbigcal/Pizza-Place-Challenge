@@ -4,7 +4,7 @@
 
 1. First you need to setup your environment, inside the project there is a folder named Documentation inside that there are 2 folders csv files and db schema.
 2. Let's focus first on the folder db schema inside that there are two files
-   - pizza place db schema_only.sql
+   - pizza place db schema only.sql
    - pizza place db schema and data.sql
 3. Please go into your database and create a database with the name
    - PizzaPlaceDB
@@ -16,9 +16,13 @@
 7. Assuming you ran the sql script schema only you now have the schema but now data yet. This is where the csv files folder from the Documentation folder is helpful.
 8. From swagger i have created endpoints where you can upload the csv data and the API will import that to the database.
 ![image](https://github.com/user-attachments/assets/4a8f6de0-66df-43b9-b8c8-60739e24510e)
-9. upload the file respective to the section name.
-10. and once that is done, congratulations you now have data.
-11. You can now try some of the endpoints
+9. Upload the file respective to the section name. Please follow the sequence below.
+    - pizza_types.csv
+    - pizza.csv
+    - orders.csv
+    - order_details.csv
+11. and once that is done, congratulations you now have data.
+12. You can now try some of the endpoints
 
 
 
