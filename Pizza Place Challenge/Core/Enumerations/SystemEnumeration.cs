@@ -27,4 +27,18 @@ public enum PizzaSizes_Enumeration
     XXL,
 }
 
+[EnumAsInt]
+public enum PizzaCategories_Enumeration
+{
+    [Display(Name = "Chicken")]
+    Chicken = 100,
 
+    [Display(Name = "Classic")]
+    Classic = 200,
+
+    [Display(Name = "Supreme")]
+    Supreme = 300,
+
+    [Display(Name = "Veggie")]
+    Veggie = 400
+}

@@ -13,5 +13,7 @@ namespace Pizza_Place_Challenge.Core.Data
 
         
         public DbSet<Pizza> Pizzas { get; set; }
+        public DbSet<PizzaType> PizzaTypes { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 }
