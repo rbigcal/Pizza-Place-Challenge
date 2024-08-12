@@ -1,6 +1,4 @@
-﻿
-
-using CsvHelper;
+﻿using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +11,10 @@ using Pizza_Place_Challenge.Core.Enumerations;
 using System.Globalization;
 using System.Net;
 
-namespace Pizza_Place_Challenge.API
-{
+namespace Pizza_Place_Challenge.API {
     [Route("api/pizza-types")]
     [ApiController, AllowAnonymous]
+    [ApiExplorerSettings(GroupName = "Pizza Types")]
     public class PizzaTypesController : ControllerBase
     {
         #region . Setup                .
@@ -53,6 +51,7 @@ namespace Pizza_Place_Challenge.API
 
         #endregion
         #region . API Endpoints        .
+
 
         [HttpGet, Route("query/all"), AllowAnonymous]
         public async Task<AllPizzaTypesModel> GetAllPizzaTypesAsync(int skip = 0, int shownumberofrecords = 10)

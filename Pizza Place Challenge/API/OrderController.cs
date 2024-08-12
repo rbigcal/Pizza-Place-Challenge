@@ -1,6 +1,4 @@
-﻿
-
-using CsvHelper;
+﻿using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +13,7 @@ using System.Net;
 namespace Pizza_Place_Challenge.API {
     [Route("api/order")]
     [ApiController, AllowAnonymous]
+    [ApiExplorerSettings(GroupName = "Order")]
     public class OrderController : ControllerBase {
         #region . Setup                .
         private DataContext _context { get; set; }
