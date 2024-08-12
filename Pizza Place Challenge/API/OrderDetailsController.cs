@@ -81,6 +81,42 @@ namespace Pizza_Place_Challenge.API {
             return result;
         }
 
+        [HttpGet, Route("query/all-by-orderid"), AllowAnonymous]
+        public async Task<AllOrderDetailsModel> GetAllOrderDetailsByOrderAsync(string orderid,int skip = 0, int shownumberofrecords = 10) {
+            AllOrderDetailsModel result = new();
+
+            try {
+                OrderDetailRepository repository = new OrderDetailRepository(_context);
+
+                List<OrderDetail> orderdetails_all = await repository.GetByOrderId(orderid);
+
+                result.OrderDetails = orderdetails_all.Skip(skip).Take(shownumberofrecords).ToList();
+
+            } catch (Exception ex) {
+                result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return result;
+        }
+
+        [HttpGet, Route("query/all-by-pizzaid"), AllowAnonymous]
+        public async Task<AllOrderDetailsModel> GetAllOrderDetailsByPizzaIdAsync(string pizzaid, int skip = 0, int shownumberofrecords = 10) {
+            AllOrderDetailsModel result = new();
+
+            try {
+                OrderDetailRepository repository = new OrderDetailRepository(_context);
+
+                List<OrderDetail> orderdetails_all = await repository.GetByPizzaId(pizzaid);
+
+                result.OrderDetails = orderdetails_all.Skip(skip).Take(shownumberofrecords).ToList();
+
+            } catch (Exception ex) {
+                result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return result;
+        }
+
         [HttpGet, Route("query/by-id"), AllowAnonymous]
         public async Task<ByOrderDetailModel> ByOrderDetailIdAsync(
             string id

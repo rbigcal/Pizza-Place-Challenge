@@ -41,7 +41,7 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI(
         options => {
-            options.DefaultModelExpandDepth(-1);
+            options.DefaultModelsExpandDepth(-1); // this hides the schema section on the bottom 
             options.EnableTryItOutByDefault();
             options.DocumentTitle = "Pizza Sales API";
             options.SwaggerEndpoint("/swagger/v1/swagger.json", "Pizza Sales");

@@ -30,20 +30,20 @@ namespace Pizza_Place_Challenge.Core.Data.Entities
 
     public interface IOrderDetailRepository : IRepository<OrderDetail>
     {
-        Task<IEnumerable<OrderDetail>> GetByOrderId(string orderid);
-        Task<IEnumerable<OrderDetail>> GetByPizzaId(string pizzaid);
+        Task<List<OrderDetail>> GetByOrderId(string orderid);
+        Task<List<OrderDetail>> GetByPizzaId(string pizzaid);
     }
 
     public class OrderDetailRepository : Repository<OrderDetail>, IOrderDetailRepository
     {
         public OrderDetailRepository(DbContext context) : base(context) { }
 
-        public async Task<IEnumerable<OrderDetail>> GetByOrderId(string orderid)
+        public async Task<List<OrderDetail>> GetByOrderId(string orderid)
         {
             return await _dbSet.Where(orderdetail => orderdetail.ID_Order == orderid).ToListAsync();
         }
 
-        public async Task<IEnumerable<OrderDetail>> GetByPizzaId(string pizzaid)
+        public async Task<List<OrderDetail>> GetByPizzaId(string pizzaid)
         {
             return await _dbSet.Where(orderdetail => orderdetail.ID_Pizza == pizzaid).ToListAsync();
         }
