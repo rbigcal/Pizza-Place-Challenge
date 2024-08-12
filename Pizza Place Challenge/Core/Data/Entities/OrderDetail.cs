@@ -19,7 +19,7 @@ namespace Pizza_Place_Challenge.Core.Data.Entities
         #endregion
         #region . PROPERTY FIELDS FOR SPECIFIC CLASS    .
 
-        [JsonProperty(PropertyName = "status")]
+        [JsonProperty(PropertyName = "quantity")]
         public int Quantity { get; set; }
 
         #endregion
