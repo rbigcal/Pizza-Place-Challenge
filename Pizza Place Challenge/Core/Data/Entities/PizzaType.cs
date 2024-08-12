@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Pizza_Place_Challenge.Core.Data.Base;
 using Pizza_Place_Challenge.Core.Enumerations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -20,6 +21,7 @@ namespace Pizza_Place_Challenge.Core.Data.Entities
         #region . PROPERTY FIELDS THAT CAME FROM CSV    .
         // for data purposes only
         [NotMapped]
+        [JsonIgnore]
         public string PizzaType_FromCSV { get; set; }
         #endregion
     }

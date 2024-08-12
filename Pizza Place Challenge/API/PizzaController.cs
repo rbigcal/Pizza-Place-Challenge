@@ -70,15 +70,21 @@ namespace Pizza_Place_Challenge.API
 
         [HttpGet, Route("query/by-id"), AllowAnonymous]
         public async Task<ByPizzaModel> ByPizzaIdAsync(
-            string pizzaid
+            string id
         )
         {
             ByPizzaModel result = new();
 
-            try
-            {
+            try {
                 PizzaRepository repository = new PizzaRepository(_context);
-                result.Pizza = await repository.GetByIdAsync(pizzaid);
+                Pizza pizza = await repository.GetByIdAsync(id);
+
+                if (pizza == null) {
+                    result.SetStatus(HttpStatusCode.InternalServerError, "Pizza not found");
+                    return result;
+                }
+
+                result.Pizza = pizza;
             }
             catch (Exception ex)
             {
