@@ -76,6 +76,41 @@ namespace Pizza_Place_Challenge.API {
             return result;
         }
 
+        [HttpGet, Route("query/all-by-time"), AllowAnonymous]
+        public async Task<AllOrderModel> GetAllOrdersByTimeAsync(DateTime datetime,int skip = 0, int shownumberofrecords = 10) {
+            AllOrderModel result = new();
+
+            try {
+                OrderRepository repository = new OrderRepository(_context);
+
+                List<Order> orders = await repository.GetBySpecificDateTime(datetime);
+                result.Orders = orders.OrderBy(o => o.DateTime).Skip(skip).Take(shownumberofrecords).ToList();
+
+            } catch (Exception ex) {
+                result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return result;
+        }
+
+
+        [HttpGet, Route("query/all-by-timerange"), AllowAnonymous]
+        public async Task<AllOrderModel> GetAllOrdersByTimeRangeAsync(DateTime mindatetime,DateTime maxdatetime, int skip = 0, int shownumberofrecords = 10) {
+            AllOrderModel result = new();
+
+            try {
+                OrderRepository repository = new OrderRepository(_context);
+
+                List<Order> orders = await repository.GetByDateTimeRange(mindatetime, maxdatetime);
+                result.Orders = orders.OrderBy(o => o.DateTime).Skip(skip).Take(shownumberofrecords).ToList();
+
+            } catch (Exception ex) {
+                result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return result;
+        }
+
         [HttpGet, Route("query/by-id"), AllowAnonymous]
         public async Task<ByOrderModel> ByOrderIdAsync(
             string id

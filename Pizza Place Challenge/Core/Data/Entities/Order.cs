@@ -27,8 +27,8 @@ namespace Pizza_Place_Challenge.Core.Data.Entities
 
     public interface IOrderRepository : IRepository<Order>
     {
-        Task<IEnumerable<Order>> GetBySpecificDateTime(DateTime datetime);
-        Task<IEnumerable<Order>> GetByDateTimeRange(DateTime mindatetime, DateTime maxdatetime);
+        Task<List<Order>> GetBySpecificDateTime(DateTime datetime);
+        Task<List<Order>> GetByDateTimeRange(DateTime mindatetime, DateTime maxdatetime);
 
     }
 
@@ -36,12 +36,12 @@ namespace Pizza_Place_Challenge.Core.Data.Entities
     {
         public OrderRepository(DbContext context) : base(context) { }
 
-        public async Task<IEnumerable<Order>> GetBySpecificDateTime(DateTime datetime)
+        public async Task<List<Order>> GetBySpecificDateTime(DateTime datetime)
         {
             return await _dbSet.Where(order => order.DateTime == datetime).ToListAsync();
         }
 
-        public async Task<IEnumerable<Order>> GetByDateTimeRange(DateTime mindatetime, DateTime maxdatetime)
+        public async Task<List<Order>> GetByDateTimeRange(DateTime mindatetime, DateTime maxdatetime)
         {
             return await _dbSet.Where(order => order.DateTime >= mindatetime && order.DateTime <= maxdatetime).ToListAsync();
         }
