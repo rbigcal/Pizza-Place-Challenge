@@ -1,35 +1,30 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using Pizza_Place_Challenge.Core.Data.Base;
 using Pizza_Place_Challenge.Core.Enumerations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
-namespace Pizza_Place_Challenge.Core.Data.Entities
-{
+namespace Pizza_Place_Challenge.Core.Data.Entities {
     public class Pizza : EntityBase
     {
 
         #region . ASSOCIATION FIELDS                    .
 
         // this property is a foreign key relation to Pizza Type
+        [JsonPropertyName("id_pizza_type")]
         public string ID_PizzaType { get; set; }
 
         #endregion
         #region . PROPERTY FIELDS FOR SPECIFIC CLASS    .
 
+        [JsonPropertyName("pizza_id")]
+        public string PizzaId { get; set; } // much better to leave this here pizza_id is like a combination of the pizza type and size
+
+        [JsonPropertyName("size")]
         public PizzaSizes_Enumeration Size { get; set; }
+
+        [JsonPropertyName("price")]
         public float Price { get; set; }
 
-        #endregion
-        #region . PROPERTY FIELDS THAT CAME FROM CSV    .
-        // for data purposes only
-        [NotMapped]
-        [JsonIgnore]
-        public string PizzaID_FromCSV { get; set; }
-
-        [NotMapped]
-        [JsonIgnore]
-        public string PizzaType_FromCSV { get; set; }
         #endregion
 
     }

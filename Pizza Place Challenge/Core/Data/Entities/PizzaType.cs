@@ -1,11 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using Pizza_Place_Challenge.Core.Data.Base;
 using Pizza_Place_Challenge.Core.Enumerations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
-namespace Pizza_Place_Challenge.Core.Data.Entities
-{
+namespace Pizza_Place_Challenge.Core.Data.Entities {
     public class PizzaType : EntityBase
     {
         #region . ASSOCIATION FIELDS                    .
@@ -13,16 +11,18 @@ namespace Pizza_Place_Challenge.Core.Data.Entities
         #endregion
         #region . PROPERTY FIELDS FOR SPECIFIC CLASS    .
 
+        [JsonPropertyName("name")]
         public string Name { get; set; }
+
+        [JsonPropertyName("code")]
+        public string Code { get; set; }
+
+        [JsonPropertyName("category")]
         public PizzaCategories_Enumeration Category { get; set; }
+
+        [JsonPropertyName("ingredients")]
         public string Ingredients { get; set; }
 
-        #endregion
-        #region . PROPERTY FIELDS THAT CAME FROM CSV    .
-        // for data purposes only
-        [NotMapped]
-        [JsonIgnore]
-        public string PizzaType_FromCSV { get; set; }
         #endregion
     }
 

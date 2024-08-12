@@ -43,7 +43,7 @@ namespace Pizza_Place_Challenge.API
 
         public class NewEditPizzaModel : ApiControllerModel
         {
-            [JsonProperty(PropertyName = "device")]
+            [JsonProperty(PropertyName = "pizza")]
             public Pizza Pizza { get; set; }
         }
 
