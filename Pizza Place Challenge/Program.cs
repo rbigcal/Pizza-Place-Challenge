@@ -2,6 +2,8 @@ using Pizza_Place_Challenge.Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Pizza_Place_Challenge.Core.Helper;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
                     .AddNewtonsoftJson(options => {
                         options.SerializerSettings.ContractResolver = new LowerCaseContractResolverHelper();
+                    })
+                    .AddJsonOptions(options => {
+                        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                     });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

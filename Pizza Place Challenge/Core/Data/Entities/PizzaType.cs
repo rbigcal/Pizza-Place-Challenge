@@ -18,6 +18,7 @@ namespace Pizza_Place_Challenge.Core.Data.Entities {
         public string Code { get; set; }
 
         [JsonPropertyName("category")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public PizzaCategories_Enumeration Category { get; set; }
 
         [JsonPropertyName("ingredients")]

@@ -45,6 +45,20 @@ namespace Pizza_Place_Challenge.API {
             public double Total { get; set; }
         }
 
+        public class TotalSalesByPizzaOrderItemModel {
+            public string DateOrdered { get; set; }
+            public int Quantity { get; set; }
+            public double Total { get; set; }
+        }
+
+        public class TotalSalesByPizza : ApiControllerModel {
+            public Pizza Pizza { get; set; }
+            public PizzaType PizzaType { get; set; }
+            public List<TotalSalesByPizzaOrderItemModel> Items { get; set; }
+            public double Total { get; set; }
+
+        }
+
         #endregion
         #region . API Endpoints        .
 
@@ -110,6 +124,71 @@ namespace Pizza_Place_Challenge.API {
                 result.OrderId = order.Id;
                 result.Items = orderdetail_items;
                 result.Total = running_total;
+
+            } catch (Exception ex) {
+                result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return result;
+        }
+
+        [HttpGet, Route("query/total-sales-by-pizza"), AllowAnonymous]
+        public async Task<TotalSalesByPizza> GetTotalSalesByPizza(string pizzaid) {
+            TotalSalesByPizza result = new();
+
+            try {
+
+                PizzaTypeRepository pizzatype_repository = new PizzaTypeRepository(_context);
+                PizzaRepository pizza_repository = new PizzaRepository(_context);
+                OrderRepository order_repository = new OrderRepository(_context);
+                OrderDetailRepository orderdetail_repository = new OrderDetailRepository(_context);
+
+                Pizza pizza = await pizza_repository.GetByIdAsync(pizzaid);
+
+                if (pizza == null) {
+                    result.SetStatus(HttpStatusCode.NotFound, "Pizza Information Not Found");
+                    return result;
+                }
+
+                PizzaType pizzatype = await pizzatype_repository.GetByIdAsync(pizza.ID_PizzaType);
+
+                if (pizzatype == null) {
+                    result.SetStatus(HttpStatusCode.NotFound, "Pizza Type Information Not Found");
+                    return result;
+                }
+
+                List<OrderDetail> orderdetails = await orderdetail_repository.GetByPizzaId(pizzaid);
+
+                if (!orderdetails.Any()) {
+                    result.SetStatus(HttpStatusCode.NotFound, "Order Details Not Found");
+                    return result;
+                }
+
+                List<Order> orders = await order_repository.GetAllAsync();
+                List<TotalSalesByPizzaOrderItemModel> items = new List<TotalSalesByPizzaOrderItemModel>();
+
+                double runningtotal = 0;
+
+                foreach(OrderDetail orderdetail in orderdetails) {
+
+                    Order order = orders.FirstOrDefault(i => i.Id == orderdetail.ID_Order);
+
+                    if(order != null) {
+                        TotalSalesByPizzaOrderItemModel new_pizzaorderitem = new TotalSalesByPizzaOrderItemModel() {
+                            DateOrdered = order.DateTime.ToString("dddd, dd MMMM yyyy hh:mm tt"),
+                            Quantity = orderdetail.Quantity,
+                            Total = orderdetail.Quantity * pizza.Price
+                        };
+                        runningtotal = runningtotal + new_pizzaorderitem.Total;
+                        items.Add(new_pizzaorderitem);
+                    }
+                }
+
+                result.SetStatus(HttpStatusCode.OK, string.Empty);
+                result.Pizza = pizza;
+                result.PizzaType = pizzatype;
+                result.Items = items;
+                result.Total = runningtotal;
 
             } catch (Exception ex) {
                 result.SetStatus(HttpStatusCode.InternalServerError, ex.Message);

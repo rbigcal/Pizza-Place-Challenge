@@ -20,6 +20,7 @@ namespace Pizza_Place_Challenge.Core.Data.Entities {
         public string PizzaId { get; set; } // much better to leave this here pizza_id is like a combination of the pizza type and size
 
         [JsonPropertyName("size")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public PizzaSizes_Enumeration Size { get; set; }
 
         [JsonPropertyName("price")]
